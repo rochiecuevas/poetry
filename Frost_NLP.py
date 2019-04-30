@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-        title = "Analysing the Poetry of Robert Frost: Using Natural Language Processing"
+        title = "Subjecting Robert Frost to Natural Language Processing"
         return render_template("index.html", title = title)
 
 @app.route('/poems')
