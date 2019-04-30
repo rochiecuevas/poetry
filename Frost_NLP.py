@@ -94,11 +94,11 @@ def metadata(title):
         conn = create_connection()
 
         # query for title of poems, the important words, and their TF-IDF scores
-        sql = "SELECT Title, Length, Sentiment, Pubn_Year FROM metadata;"
+        sql = "SELECT Title, Length, Sentiment, Pubn_Year, Lexical_Diversity FROM metadata;"
         cursor = conn.execute(sql)
 
         # get the column headers
-        column_names = ["Title", "PoemLength", "Sentiment", "Pubn_Year"]
+        column_names = ["Title", "PoemLength", "Sentiment", "Pubn_Year", "Lexical_Diversity"]
         poems = cursor.fetchall()
 
         # create a list of dictionaries
@@ -111,17 +111,20 @@ def metadata(title):
         poem_length = df.loc[df["Title"] == title]["PoemLength"].values.tolist()
         sentiment = df.loc[df["Title"] == title]["Sentiment"].values.tolist()
         year = df.loc[df["Title"] == title]["Pubn_Year"].values.tolist()
+        lex_div = df.loc[df["Title"] == title]["Lexical_Diversity"].values.tolist()
 
         x = poem_length
         y = sentiment
         z = year
+        a = lex_div
 
         # jsonify results
         trace_sentiment = {
                 "title": title,
                 "poem_length": x,
                 "sentiment": y,
-                "publication_year": z
+                "publication_year": z,
+                "lexical_diversity": a
         }
 
         return jsonify (trace_sentiment)

@@ -50,9 +50,10 @@ d3.json(urlMetadata).then(function(trace){
             var tdLength = d3.select("#poem_length");
             var tdYear = d3.select("#publication_year");
             var tdSentiment = d3.select("#sentiment");
+            var tdLexDiv = d3.select("#lex_div")
 
-            var tdList = [tdLength, tdYear, tdSentiment];
-            var catList = ["poem_length", "publication_year", "sentiment"];
+            var tdList = [tdLength, tdYear, tdSentiment, tdLexDiv];
+            var catList = ["poem_length", "publication_year", "sentiment", "lexical_diversity"];
 
             // (5.3.2) Populate the HTML table with the metadata for each poem
             for (var i = 0; i < tdList.length; i ++){

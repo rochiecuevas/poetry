@@ -47,7 +47,7 @@
       <div class = "row">
         <div class = "col-md-2"></div>
         <div class = "col-md-8">
-          <h3>What is Natural Language Processing?</h3>
+          <h3>What I did</h3>
           <p>Hello!</p>
         </div>
       </div>
@@ -65,9 +65,9 @@
         <br>
     </div>   
     <div class = "row"></div> 
+      <!-- Insert table -->
       <div class = "col-md-4" id = "selection_section">
           <h4>Metadata</h4>
-        <!-- Insert table -->
         <table id = "poem_metadata">
           <thead>
             <tr>
@@ -83,6 +83,10 @@
             <tr>
               <td class = "category">Number of Words</td>
               <td class = "value" id = "poem_length"></td>
+            </tr>
+            <tr>
+              <td class = "category">Lexical Diversity</td>
+              <td class = "value" id = "lex_div"></td>
             </tr>
             <tr>
               <td class = "category">Sentiment <span class = "footnote">(1)</span></td>
@@ -104,23 +108,25 @@
         </table>
         
       </div>
+      <!-- Insert poem lines -->
       <div class = "col-md-4">
         <h4 id = "title"></h4>
         <div class = "poem_text">
           <p id = "lines"><i></i></p>
         </div>
       </div>
-
-      <!-- Important Words -->
+      <!-- Insert graph of mportant Words -->
       <div class = "col-md-4">
         <div id = "bar"></div>
       </div>
     </div>
   </div>
-  
-    <!-- Topic Modelling -->
-
-  <hr>    
+  <hr>  
+  <!-- Topic Modelling -->
+  <div class = "container">
+    <div class = "row"></div>
+  </div>
+    
   <!-- More JavaScript and CSS script -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   
