@@ -71,6 +71,21 @@ d3.json(urlMetadata).then(function(trace){
             console.log(res);
             document.getElementById("lines").innerHTML = res;
 
+            // (5.6) Create a bar chart using TF-IDF
+            var data2 = [trace][0];
+            console.log(data2);
+            data2["type"] = "bar";
+            data2["x"] = data2["word"];
+            data2["y"] = data2["TF-IDF"];
+
+            var layout = {
+                title: "TF-IDF of the five most important words",
+                showlegend: false,
+                xaxis: {title: "Word"},
+                yaxis: {title: "Word importance (TF-IDF)"}
+            };
+
+            Plotly.newPlot("bar", [data2], layout);
         });
     };
     poemTitle.on("change", handleChange);
