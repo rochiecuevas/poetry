@@ -8,6 +8,9 @@
     <!-- Bootstrap script -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <!-- JavaScript script (d3.js and plotly.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+
   <title>Robert Frost Poetry</title>
 
 </head>
@@ -25,6 +28,51 @@
       </div>
     </div>
   </section>
+  <!-- Interactive Table for Metadata -->
+  <div class = "container">
+    <div class = "row">
+        <h3>The poetry of Robert Frost</h3>
+        <label>More information about&nbsp;&nbsp;&nbsp;&nbsp;</label> <!-- add space between text and option box -->
+        <select id = "poem">
+          <option id = "choices">Pick a poem.</option>
+        </select>
+        <br>
+        <br>
+    </div>   
+    <div class = "row"></div> 
+      <div class = "col-md-4" id = "selection_section">
+        <!-- Insert table -->
+        <table id = "poem_metadata">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class = "category">Publication Year</td>
+              <td class = "value" id = "publication_year"></td>
+            </tr>
+            <tr>
+              <td class = "category">Number of Words</td>
+              <td class = "value" id = "poem_length"></td>
+            </tr>
+            <tr>
+              <td class = "category">Sentiment</td>
+              <td class = "value" id = "sentiment"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class = "col-md-8">
+          <h4>The words of Robert Frost</h4>
+        <div class = "poem_text">
+          <p id = "lines"></p>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Important Words -->
   <section>
 
