@@ -62,22 +62,15 @@ d3.json(urlMetadata).then(function(trace){
         // (5.4) Change the data url to include the selection
         var urlPoem1 = `/data/${selection}`;
         console.log(urlPoem1);
+        document.getElementById("title").innerHTML = selection;
 
         // (5.5) Use the new url to get the lines of the poem
         d3.json(urlPoem1).then(function(trace){
-            var data = [trace][0];
-            console.log(data);
+            var data = [trace][0]["lines"];
+            var res = data.split(/\n/).join("<br>")
+            console.log(res);
+            document.getElementById("lines").innerHTML = res;
 
-            // (5.5.1) Get the values that match the keys of each item in the array
-            var pLines = d3.select("#lines");
-
-            var pList = [pLines];
-            var pcatList = ["lines"];
-
-            // (5.5.2) Populate the paragraph with the lines of the chosen poem
-            for (var i = 0; i < pList.length; i ++){
-                pList[i].text(data[pcatList[i]])
-            };
         });
     };
     poemTitle.on("change", handleChange);

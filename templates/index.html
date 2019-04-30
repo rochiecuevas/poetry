@@ -22,12 +22,33 @@
         <div class = "col-md-12">
             <h1>{{ title }}</h1>
         </div>
-        <p>Robert Frost is my favourite poet. I first encountered his work when I was in high school, thanks to my Western literature professor. The poem <i>Stopping by Woods on a Snowy Evening</i> particularly made a mark... I can still recite its first few lines, thanks to its structure: Frost wrote this poem in iambic tetrameter, giving it a distinctive cadence that easily sticks to mind.</p>
-        <p>Aside from his use of vivid imagery, what I noticed was the consistency of his themes. He wrote about forests and about precipitation, implying some notes of desolation or sadness. Note, however, that I have read only a portion of his works. </p>
-        <p>I would like to learn more about his poems. In this project, I used Natural Language Processing to classify his work according to topics. I limit myself to patterns based on the words he used, not on the figurative meaning of the poems.</p>
       </div>
     </div>
   </section>
+  <!-- Why Robert Frost? -->
+  <div class = "container">
+    <div class = "row">
+      <div class = "col-md-2"></div>
+      <div class = "col-md-8">
+          <h3>Why Robert Frost?</h3>
+          <p>Robert Frost is my favourite poet. I first encountered his work when I was in high school, thanks to my Western literature professor. The poem <i>Stopping by Woods on a Snowy Evening</i> particularly made a mark... I can still recite its first few lines, thanks to its structure: Frost wrote this poem in iambic tetrameter, giving it a distinctive cadence that easily sticks to mind.</p>
+          <p>Aside from his use of vivid imagery, what I noticed was the consistency of his themes. He wrote about forests and about precipitation, implying some notes of desolation or sadness. Note, however, that I have read only a portion of his works. </p>
+          <p>I would like to learn more about his poems. In this project, I applied Natural Language Processing to classify his work according to topics and to conduct sentiment analysis. I limit myself to patterns based on the words he used, not on the figurative meaning of the poems.</p>
+      </div>
+    </div>
+  </div>      
+  <hr>
+  <!-- Natural Language Processing -->
+  <div class = "container">
+      <div class = "row">
+        <div class = "col-md-2"></div>
+        <div class = "col-md-8">
+          <h3>What is Natural Language Processing?</h3>
+          <p>Hello!</p>
+        </div>
+      </div>
+  </div>
+  <hr>
   <!-- Interactive Table for Metadata -->
   <div class = "container">
     <div class = "row">
@@ -41,6 +62,7 @@
     </div>   
     <div class = "row"></div> 
       <div class = "col-md-4" id = "selection_section">
+          <h4>Metadata</h4>
         <!-- Insert table -->
         <table id = "poem_metadata">
           <thead>
@@ -59,17 +81,38 @@
               <td class = "value" id = "poem_length"></td>
             </tr>
             <tr>
-              <td class = "category">Sentiment</td>
+              <td class = "category">Sentiment <span class = "footnote">(1)</span></td>
               <td class = "value" id = "sentiment"></td>
             </tr>
           </tbody>
+          <tbody>
+            <tr>
+              <td colspan = "2">
+                <br>
+                <p class = "footnotes">
+                  <span class = "footnotesTitle">Footnote:</span>
+                  <br>
+                  (1) The sentiment noted here is calculated using TextBlob, a Python library used for natural language processing. This library is capable of predicting sentiment from unstructured data.
+                </p>
+              </td>
+            </tr>
+          </tbody>
         </table>
+        
       </div>
-      <div class = "col-md-8">
-          <h4>The words of Robert Frost</h4>
+      <div class = "col-md-4">
+        <h4 id = "title">Your chosen poem.</h4>
         <div class = "poem_text">
-          <p id = "lines"></p>
+          <p id = "lines"><i>The poem's lines will appear here.</i></p>
         </div>
+      </div>
+      <div class = "col-md-4">
+        <h4>About Robert Frost</h4>
+        <p><i>Poetry begins in trivial metaphors, pretty metaphors, ‘grace’ metaphors, and goes on to the profoundest thinking that we have. Poetry provides the one permissible way of saying one thing and meaning another. ... Unless you are at home in the metaphor, unless you have had your proper poetical education in the metaphor, you are not safe anywhere.</i></p>
+        <p align = "right">–Robert Frost, <i>Education by Poetry</i> (1931)</p>
+        <br>
+        <p>Robert Frost's poems are filled with figures of speech and vivid imagery that transport one back to the wintry days and cool evenings of rural New England. His poems paint such colourful pictures that even people living in the tropics begin to imagine what four seasons of tropical regions must be like. Despite their artistry, his poems never veer so far as to become unrelatable to the common reader. His subjects, sentiments, and wordplay remain grounded and understandable.</p>
+        <p>His works are highly recognised. He received four Pulitzer Prizes and was nominated for the Nobel Prize for Literature 31 times!</p>
       </div>
     </div>
   </div>
