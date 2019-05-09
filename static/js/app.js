@@ -27,11 +27,67 @@ d3.json(urlMetadata).then(function(trace){
             return title;
         })
         .attr("title", "options");
+       
 
-    // (4) Disable "Pick a poem."
-    document.getElementById("choices").disabled = true;
+    // (4) Default selection = "October"
+    var defaultx = "October";
+    options.property("selected", function(d){
+        return d === defaultx
+    }); 
 
-    // (5) Fill in the table based on the selected poem
+    // (5) Fill in the table based on the default selected poem
+    var urlMetadata2 = `/metadata/${defaultx}`;
+    console.log(urlMetadata2);
+
+    var urlPoem2 = `/data/${defaultx}`;
+    console.log(urlPoem2)
+    document.getElementById("title").innerHTML = defaultx;
+
+    // DEFAULT: Use the default url to fill the table with metadata
+    d3.json(urlMetadata2).then(function(trace){
+        var data = [trace][0];
+        console.log(data);
+
+        // (5.3.1) Get the values that match the keys of each item in the array
+        var tdLength = d3.select("#poem_length");
+        var tdYear = d3.select("#publication_year");
+        var tdSentiment = d3.select("#sentiment");
+        var tdLexDiv = d3.select("#lex_div")
+
+        var tdList = [tdLength, tdYear, tdSentiment, tdLexDiv];
+        var catList = ["poem_length", "publication_year", "sentiment", "lexical_diversity"];
+
+        // (5.3.2) Populate the HTML table with the metadata for each poem
+        for (var i = 0; i < tdList.length; i ++){
+            tdList[i].text(data[catList[i]])
+        };
+    });
+
+    // DEFAULT: Use the default url to print the poem
+    d3.json(urlPoem2).then(function(trace){
+        var data = [trace][0]["lines"];
+        var res = data.split(/\n/).join("<br>")
+        console.log(res);
+        document.getElementById("lines").innerHTML = res;
+
+        // DEFAULT: Create a bar chart using TF-IDF
+            var data2 = [trace][0];
+            console.log(data2);
+            data2["type"] = "bar";
+            data2["x"] = data2["word"];
+            data2["y"] = data2["TF-IDF"];
+
+            var layout = {
+                title: "TF-IDF of the five most important words",
+                showlegend: false,
+                xaxis: {title: "Word"},
+                yaxis: {title: "Word importance (TF-IDF)"}
+            };
+
+            Plotly.newPlot("bar", [data2], layout);
+        });
+
+
     // (5.1) Select a sample
     function handleChange(){
         var selection = poemTitle.property("value");
