@@ -147,6 +147,8 @@ function extractPoem(url){
         var res = data["lines"];
         console.log(res);
         document.getElementById("lines").innerHTML = res;
+        // var messagetoSend = document.getElementById("lines").value.replace(/\n/g, "<br>");
+        // alert(messagetoSend);
 
         // Construct the TF-IDF bar plot
         data["type"] = "bar";
