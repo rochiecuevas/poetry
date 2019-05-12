@@ -67,7 +67,7 @@
         </select>
         <br>
         <label>Pick a poem&nbsp;&nbsp;&nbsp;&nbsp;</label> <!-- add space between text and option box -->
-        <select id = "poem">
+        <select id = "poem" onchange = "handleChange();">
           <option id = "choices"></option>
         </select>
         <br>
@@ -126,6 +126,7 @@
       </div>
       <!-- Insert graph of important Words -->
       <div class = "col-md-4">
+        <h4>Keywords</h4>
         <div id = "bar"></div>
       </div>
     </div>
