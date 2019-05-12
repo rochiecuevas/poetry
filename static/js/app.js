@@ -4,6 +4,8 @@ var urlPoem = "/data"
 var defaultPoet = "Robert Frost";
 var defaultPoem = "October";
 
+// Fill the landing page with information from the default
+// poet and poem
 d3.json(urlMetadata).then(function(trace){
     var data = [trace][0];
     console.log(data);
@@ -54,7 +56,9 @@ d3.json(urlMetadata).then(function(trace){
     poetName.on("change", handleChangePoet);
 });
 
-// Functions defined
+////////////////////////
+// Functions defined //
+///////////////////////
 function extractTitles(url){
     d3.json(url).then(function(trace){
         var data = [trace][0];
@@ -68,8 +72,10 @@ function extractTitles(url){
         };
         console.log(optionsList);
 
-        // Populate the select field with poem titles
+        // Remove existing items in the options dropdown list
         document.getElementById('poem').innerHTML = "";
+
+        // Populate the select field with poem titles
         var options = poemTitle
             .selectAll("#title")
             .data(optionsList).enter()
