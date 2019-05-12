@@ -21,11 +21,11 @@ def data():
     conn = create_connection()
 
     # query for title of poems and the text
-    sql = "SELECT title, lines FROM Frost;"
+    sql = "SELECT Poet, Title, Content FROM metadata;"
     cursor = conn.execute(sql)  
 
     # gets the column headers in the merged table
-    column_names = ["Title", "Text"]  
+    column_names = ["Poet", "Title", "Content"]  
 
     # output is a list of dictionaries (key: column header, value: data)
     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
@@ -38,13 +38,13 @@ def importance(title):
     conn = create_connection()
 
     # query for title of poems, the important words, and their TF-IDF scores
-    sql = "SELECT F.title, F.lines, t.Word, t.'TF-IDF' FROM Frost as F \
+    sql = "SELECT m.Title, m.Content, t.Word, t.'TF-IDF' FROM metadata as m \
            INNER JOIN tfidf as t\
-           ON F.'index' = t.PoemNo;"
+           ON m.PoemNo = t.PoemNo;"
     cursor = conn.execute(sql)  
 
     # gets the column headers in the merged table
-    column_names = ["Title", "Lines", "Word", "TF-IDF"]  
+    column_names = ["Title", "Content", "Word", "TF-IDF"]  
 
     # output is a list of dictionaries (key: column header, value: data)
     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
@@ -54,7 +54,7 @@ def importance(title):
 
     word_list = df.loc[df["Title"] == title]["Word"].values.tolist()
     tfidf_list = df.loc[df["Title"] == title]["TF-IDF"].values.tolist()
-    line_list = df.loc[df["Title"] == title]["Lines"].values.tolist()
+    line_list = df.loc[df["Title"] == title]["Content"].values.tolist()
 
     x = word_list
     y = tfidf_list
@@ -76,11 +76,11 @@ def meta():
         conn = create_connection()
 
         # query for title of poems and the text
-        sql = "SELECT Title, Length, Sentiment, Pubn_Year FROM metadata;"
+        sql = "SELECT Poet, Title, Length, Sentiment, Pubn_Year FROM metadata;"
         cursor = conn.execute(sql)  
 
         # gets the column headers in the merged table
-        column_names = ["Title", "Length", "Sentiment", "Publication_Year"]  
+        column_names = ["Poet", "Title", "Length", "Sentiment", "Publication_Year"]  
 
         # output is a list of dictionaries (key: column header, value: data)
         results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
@@ -88,17 +88,17 @@ def meta():
         # json format for list of dictionaries
         return jsonify (results)
 
-
-@app.route('/metadata/<title>')
-def metadata(title):
+@app.route('/metadata/<poet>')
+def metadata1(poet):
+        """ Get the titles of the poems by the poet """
         conn = create_connection()
 
         # query for title of poems, the important words, and their TF-IDF scores
-        sql = "SELECT Title, Length, Sentiment, Pubn_Year, Lexical_Diversity FROM metadata;"
+        sql = "SELECT Poet, Title FROM metadata;"
         cursor = conn.execute(sql)
 
         # get the column headers
-        column_names = ["Title", "PoemLength", "Sentiment", "Pubn_Year", "Lexical_Diversity"]
+        column_names = ["Poet", "Title"]
         poems = cursor.fetchall()
 
         # create a list of dictionaries
@@ -108,26 +108,55 @@ def metadata(title):
         # convert the list of dictionaries into a dataframe
         df = pd.DataFrame(results)
 
-        poem_length = df.loc[df["Title"] == title]["PoemLength"].values.tolist()
-        sentiment = df.loc[df["Title"] == title]["Sentiment"].values.tolist()
-        year = df.loc[df["Title"] == title]["Pubn_Year"].values.tolist()
-        lex_div = df.loc[df["Title"] == title]["Lexical_Diversity"].values.tolist()
-
-        x = poem_length
-        y = sentiment
-        z = year
-        a = lex_div
+        title = df.loc[df["Poet"] == poet]["Title"].values.tolist()
 
         # jsonify results
         trace_sentiment = {
-                "title": title,
-                "poem_length": x,
-                "sentiment": y,
-                "publication_year": z,
-                "lexical_diversity": a
+                "poet": poet,
+                "title": title
         }
 
         return jsonify (trace_sentiment)
+
+@app.route('/metadata/<poet>/<title>')
+def metadata2(poet, title):
+        """ Get metadata information about a particular poem """
+
+        conn = create_connection()
+
+        # query for title of poems, the important words, and their TF-IDF scores
+        sql = "SELECT Poet, Title, Length, Sentiment, Pubn_Year, Lexical_Diversity FROM metadata;"
+        cursor = conn.execute(sql)
+
+        # get the column headers
+        column_names = ["Poet", "Title", "PoemLength", "Sentiment", "Pubn_Year", "Lexical_Diversity"]
+        poems = cursor.fetchall()
+
+        # create a list of dictionaries
+        zips = [zip(column_names, row) for row in poems]
+        results = [dict(zipped) for zipped in zips]
+
+        # convert the list of dictionaries into a dataframe
+        df = pd.DataFrame(results)
+
+        poet = df[(df["Poet"] == poet) & (df["Title"] == title)]["Poet"].item()
+        title = df[(df["Poet"] == poet) & (df["Title"] == title)]["Title"].item()
+        poem_length = df[(df["Poet"] == poet) & (df["Title"] == title)]["PoemLength"].item()
+        sentiment = df[(df["Poet"] == poet) & (df["Title"] == title)]["Sentiment"].item()
+        year = df[(df["Poet"] == poet) & (df["Title"] == title)]["Pubn_Year"].item()
+        lex_div = df[(df["Poet"] == poet) & (df["Title"] == title)]["Lexical_Diversity"].item()
+
+        # jsonify results
+        trace_title = {
+                "poet": poet,
+                "title": title,
+                "poem_length": poem_length,
+                "sentiment": sentiment,
+                "publication_year": year,
+                "lexical_diversity": lex_div
+        }
+
+        return jsonify (trace_title)
 
 
 if __name__ == "__main__":
