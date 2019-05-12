@@ -5,9 +5,9 @@ var defaultPoet = "Robert Frost";
 var defaultPoem = "October";
 
 // Define variables to be used in the functions
-var poemTitle;
-var poetName;
-var selection;
+// var poemTitle;
+// var poetName;
+// var selection;
 
 d3.json(urlMetadata).then(function(trace){
     var data = [trace][0];
@@ -44,34 +44,18 @@ d3.json(urlMetadata).then(function(trace){
     // Use the default poet to create a subset of poem titles for the title options list
     var urlMetadata1 = `/metadata/${defaultPoet}`;
     console.log(urlMetadata1);
-    extractTitles(urlMetadata1);
 
     // Extract metadata for the (default) selected poem of the selected poet
     var urlMetadata2 = `/metadata/${defaultPoet}/${defaultPoem}`;
     console.log(urlMetadata2);
-    extractMeta(defaultPoem, urlMetadata2);
-
-    // Extract metadata for the (default) selected poem of the selected poet
-    var urlMetadata2 = `/metadata/${defaultPoet}/${defaultPoem}`;
-    console.log(urlMetadata2);
-    extractMeta(defaultPoem, urlMetadata2);
 
     // Create a plot of keywords for the default poem
     var urlPoem = `/data/${defaultPoem}`;
     console.log(urlPoem);
-    extractPoem(urlPoem);
+
+    extractTitles(urlMetadata1);
 
     //  Change the poet
-    function handleChangePoet(){
-        selection = poetName.property("value");
-        console.log(selection);
-
-        var urlMetadata1 = `/metadata/${selection}`;
-        console.log(urlMetadata1);
-        extractTitles(urlMetadata1);
-
-        return selection;
-    };
     poetName.on("change", handleChangePoet);
 });
 
@@ -110,7 +94,16 @@ function extractTitles(url){
         var url = `/metadata/${selection}/${selection1}`;
 
         extractMeta(selection1, url);
-        return selection1;
+        
+        // Change poems
+        function handleChangePoem(){
+            selection1 = poemTitle.property("value");
+            url = `/metadata/${selection}/${selection1}`;
+            console.log(url);
+
+            extractMeta(selection1, url);
+        };
+        poemTitle.on("change", handleChangePoem);
     });     
 };
 
@@ -169,7 +162,15 @@ function extractPoem(url){
     });
 };
 
+function handleChangePoet(){
+    selection = poetName.property("value");
+    console.log(selection);
 
+    var urlMetadata1 = `/metadata/${selection}`;
+    console.log(urlMetadata1);
+    extractTitles(urlMetadata1);
+
+};
 
 
 // //     // (5.1) Select a sample
