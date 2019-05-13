@@ -2,6 +2,7 @@
 import pandas as pd
 from flask import Flask, render_template, redirect, jsonify
 import sqlite3
+from statistics import mean, stdev
 
 # Create a connection to the sqlite database
 def create_connection():
@@ -94,11 +95,11 @@ def metadata1(poet):
         conn = create_connection()
 
         # query for title of poems, the important words, and their TF-IDF scores
-        sql = "SELECT Poet, Title FROM metadata;"
+        sql = "SELECT Poet, Title, Sentiment, Length, Lexical_Diversity FROM metadata;"
         cursor = conn.execute(sql)
 
         # get the column headers
-        column_names = ["Poet", "Title"]
+        column_names = ["Poet", "Title", "Sentiment", "PoemLength", "LexDiversity"]
         poems = cursor.fetchall()
 
         # create a list of dictionaries
@@ -109,14 +110,25 @@ def metadata1(poet):
         df = pd.DataFrame(results)
 
         title = df.loc[df["Poet"] == poet]["Title"].values.tolist()
+        sentiment = df.loc[df["Poet"] == poet]["Sentiment"].values.tolist()
+        length = df.loc[df["Poet"] == poet]["PoemLength"].values.tolist()
+        lex_dev = df.loc[df["Poet"] == poet]["LexDiversity"].values.tolist()
+        length_mean = mean(length)
+        lexdev_mean = mean(lex_dev)
+        lexdev_sd = stdev(lex_dev)
+        
 
         # jsonify results
-        trace_sentiment = {
+        trace_poetMeta = {
                 "poet": poet,
-                "title": title
+                "title": title,
+                "length_mean": int(length_mean),
+                "lexdev_mean": round(lexdev_mean, 3),
+                "lexdev_sd": round(lexdev_sd, 3),
+                "sentiments": sentiment
         }
 
-        return jsonify (trace_sentiment)
+        return jsonify (trace_poetMeta)
 
 @app.route('/metadata/<poet>/<title>')
 def metadata2(poet, title):
