@@ -63,6 +63,9 @@ function extractTitles(url){
     d3.json(url).then(function(trace){
         var data = [trace][0];
         console.log(data);
+        document.getElementById('name').innerHTML = data["poet"];
+        document.getElementById('poemlength_mean').innerHTML = `${data["length_mean"]} words`;
+        document.getElementById('lexdiv_mean').innerHTML = `${data["lexdev_mean"]} ± ${data["lexdev_sd"]}`;
 
         // When a selection has been made
         var poemTitle = d3.select("#poem");
