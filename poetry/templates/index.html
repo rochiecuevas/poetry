@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Bootstrap script -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- JavaScript script (d3.js and plotly.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+
+  <title>Poetry NLP</title>
+
+</head>
+<body>
+  <!-- Intro Section -->
+  <section id = "hero" class = "hero">
+    <div class = "jumbotron">
+      <div class = "container">
+        <div class = "col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Why Robert Frost? -->
+  <div class = "container">
+    <div class = "row">
+      <div class = "col-md-2"></div>
+      <div class = "col-md-8">
+          <h3>Poetry</h3>
+          <p><i>Poetry begins in trivial metaphors, pretty metaphors, ‘grace’ metaphors, and goes on to the profoundest thinking that we have. Poetry provides the one permissible way of saying one thing and meaning another. ... Unless you are at home in the metaphor, unless you have had your proper poetical education in the metaphor, you are not safe anywhere.</i></p>
+          <p align = "right">–Robert Frost, <i>Education by Poetry</i> (1931)</p>
+          <br>
+          <p>My high school literature professors introduced me to some of poetry's classics: how creatives (in the literary arts) express themselves through the power and the imagery of the written word. At the time (and until now), I cannot say that I have wholly understood the depth and appreciated the beauty of each poem.</p>
+          <p>Equipped with some knowledge of natural language processing (NLP), I attempt to figure out what the poets are saying by extracting the poem's important words and predicting the sentiments that the authors were trying to convey.</p>
+          <p>I opted to look more deeply into the works of three poets: Robert Frost, William Butler Yeats, and Rudyard Kipling. Yeats and Kipling both received Nobel Prizes for literature while Frost was nominated for the same award 31 times. Frost received four Pulitzer Prizes. Results from NLP help provide a preview of the poem. The poem is included as well.</p>
+      </div>
+    </div>
+  </div>      
+  <hr>
+  <!-- Natural Language Processing -->
+  <div class = "container">
+      <div class = "row">
+        <div class = "col-md-2"></div>
+        <div class = "col-md-8">
+          <h3>NLP Overview</h3>
+          <p>The code used for analyses, and detailed explanations, can be found in my GitHub repository: <a href = "https://github.com/rochiecuevas/poetry">https://github.com/rochiecuevas/poetry</a>.</p>
+          <ol>
+            <li><b>Collected poems.</b> The poems were obtained from different poetry websites through webscraping using the <a href = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup</a> Python library. Webscraping allowed me to automate the extraction of poems from the websites.</li>
+            <br>
+            <li><b>Measured Keyword Importance.</b> Term importance was calculated based on a metric called <i>term frequency-inverse document frequency</i> (TF-IDF). Term frequency is the number of times a term appears in a document. Inverse document frequency, on the other hand, is the calculated based on the inverse fraction of the number of documents in which the term appears in the corpus (set of documents). A high TF-IDF, therefore, indicates that a term occurs frequently in a document but not in all documents in the corpus; hence, it can be used as a keyword that distinguishes that document among the others in the corpus. On the other hand, a low TF-IDF is reached when a term appears in many documents within the corpus. More about TF-IDF <a href = "https://en.wikipedia.org/wiki/Tf%E2%80%93idf">here</a>.</li>
+            <br>
+            <li><b>Analysed Sentiment.</b> The Python <a href = "https://textblob.readthedocs.io/en/dev/">TextBlob</a> module was used because it is capable of unsupervised sentiment analysis. This means that it can predict if a poem is positive or negative just based on the words included in it; I didn't have to train a model using a pre-classified training data set.</li>
+        </ol>
+        </div>
+      </div>
+  </div>
+  <hr>
+  <!-- Interactive Table for Metadata -->
+  <div class = "container">
+    <div class = "row">
+        <h3>The Poems</h3>
+        <label>Pick a poet&nbsp;&nbsp;&nbsp;&nbsp;</label><!-- add space between text and option box -->
+        <select id = "poet">
+          <option id = "poet_choices"></option>
+        </select>
+        <br>
+        <label>Pick a poem&nbsp;&nbsp;&nbsp;&nbsp;</label> <!-- add space between text and option box -->
+        <select id = "poem">
+          <option class = "poem"></option>
+        </select>
+        <br>
+        <br>
+    </div>   
+    <div class = "row"></div> 
+      <!-- Insert table -->
+      <div class = "col-md-4" id = "selection_section">
+          <h4>Metadata</h4>
+        <table id = "poem_metadata">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan = "2"><b>Poet Information</b></td>
+            </tr>
+            <tr>
+              <td class = "category">Name</td>
+              <td class = "value" id = "name"></td>
+            </tr>
+            <tr>
+              <td class = "category">Mean Poem Length</td>
+              <td class = "value" id = "poemlength_mean"></td>
+            </tr>
+            <tr>
+              <td class = "category">Mean Lexical Diversity<sup>1</sup></td>
+              <td class = "value" id = "lexdiv_mean"></td>
+            </tr>
+            <tr>
+                <td colspan = "2"><b>Poem Information</b></td>
+            </tr>
+            <tr>
+              <td class = "category">Publication Year</td>
+              <td class = "value" id = "publication_year"></td>
+            </tr>
+            <tr>
+              <td class = "category">Number of Words</td>
+              <td class = "value" id = "poem_length"></td>
+            </tr>
+            <tr>
+              <td class = "category">Lexical Diversity</td>
+              <td class = "value" id = "lex_div"></td>
+            </tr>
+            <tr>
+              <td class = "category">Sentiment<sup>2</sup></td>
+              <td class = "value" id = "sentiment"></td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td colspan = "2">
+                <p class = "footnotes">
+                  Footnote:
+                  <br>
+                  <sup>1</sup><b>Lexical Diversity:</b> A measure of how many unique words are found in a document.<br>
+                  <sup>2</sup>The sentiment noted here is predicted using TextBlob, a Python library used for natural language processing. This library is capable of predicting sentiment from unstructured data.
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+      <!-- Insert poem lines -->
+      <div class = "col-md-4">
+        <h4 id = "title"></h4>
+        <div class = "poem_text">
+          <p id = "lines"><i></i></p>
+        </div>
+      </div>
+      <!-- Insert graph of important Words -->
+      <div class = "col-md-4">
+        <h4>Poem Keywords</h4>
+        <div id = "bar"></div>
+      </div>
+    </div>
+  </div>
+  <hr>  
+  <!-- All poets -->
+  <div class = "container">
+    <h3>Poem insights</h3>
+    <div class = "row">
+      <!-- Keyword network -->
+      <div class = "col-md-6">
+        <h4>Network of keywords</h4>
+        <img src = "static/images/poemTFIDF_network.png" alt = "TFIDF network image">
+        <p><i>The network shows the degree of co-occurence among the different keywords. The font size of each word is proportional to how often it is used as a keyword in the collection of poems. Based on the analysis, "England" is the most frequently used keyword in the database. This reflects the English connection of the poets; Kipling, in particular, because his works is the biggest (at 421 poems) in the database. </i></p>
+      </div>
+      <!-- Poem length compared -->
+      <div class = "col-md-6">
+        <h4>Poem Lengths</h4>
+        <div id = "bar2"></div>
+        <p><i>Rudyard Kipling was the most verbose among the three poets. On average, his poems had 182 words. William Butler Yeats was the poet of a few words because his poems averaged 107 words.</i></p>
+      </div>
+    </div>
+    <div class = "row">
+      <!-- Lexical diversity compared -->
+      <div class = "col-md-6">
+        <h4>Lexical Diversity</h4>
+        <div id = "bar3"></div>
+        <p><i>The three poets have similar average lexical diversities of ~80%. This means that around 80% of the words used for each poem was unique. Note that stop words (e.g., pronouns and their contraction variants, different forms of 'be') were already filtered out before lexical diversity was calculated.</i></p>
+      </div>    
+      <!-- Sentiments compared -->
+      <div class = "col-md-6">
+        <h4>Sentiments</h4>
+        <div id = "bar4"></div>
+        <p><i>For each poet, more than 65% of the poems in the database is predicted by NLP to be positive. This is an interesting finding because many of these poems were written around the time of, or right after, World War I.</i></p>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+  <hr>
+  <!-- Website Sources -->
+  <h3>The poems were scraped from the following websites</h3>
+  <ul>
+    <li><a href = "https://www.poetryfoundation.org/">The Poetry Foundations</a></li>
+    <li><a href = "https://www.bartleby.com/">Bartleby</a></li>
+    <li><a href = "http://www.public-domain-poetry.com/">Public Domain Poetry</a></li>
+  </ul>
+  <!-- More JavaScript and CSS script -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  
+</body>
+
+</html>
