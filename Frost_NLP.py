@@ -9,6 +9,22 @@ def create_connection():
         conn = sqlite3.connect("db/Poetry.db")
         return conn
 
+# Create a function that extracts data from a list of dictionaries
+def extractData(dict_list, poet, variable):
+        x = [obj[variable] for obj in dict_list if obj["Poet"] == poet]
+        return (x) 
+
+# Create a function that counts words
+def WordCount(lst):
+        """ Create a dictionary """
+        word_dict = {}
+        for word in lst:
+                if word in word_dict:
+                        word_dict[word] += 1
+                else:
+                        word_dict[word] = 1
+        return word_dict
+
 # Create an instance of Flask
 app = Flask(__name__)
 
@@ -88,6 +104,44 @@ def meta():
 
         # json format for list of dictionaries
         return jsonify (results)
+
+@app.route('/metadata2')
+def meta2():
+        conn = create_connection()
+
+        # query for title of poems and the text
+        sql = "SELECT Poet, Title, Length, Sentiment, Lexical_Diversity, Pubn_Year FROM metadata;"
+        cursor = conn.execute(sql)  
+
+        # gets the column headers in the merged table
+        column_names = ["Poet", "Title", "Length", "Sentiment", "Lexical_Diversity", "Publication_Year"]  
+
+        # output is a list of dictionaries (key: column header, value: data)
+        results = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+
+        # create a list of unique poets
+        poets = list(set([result["Poet"] for result in results]))
+
+        # create a list of average lexical diversity,poem length,  (nested by poet)
+        lexDiv = [round(mean(extractData(results, poet, "Lexical_Diversity")), 2) for poet in poets]    
+        length = [int(mean(extractData(results, poet, "Length"))) for poet in poets]    
+        sentiments = [extractData(results, poet, "Sentiment") for poet in poets]
+        sentiment_count = [WordCount(s) for s in sentiments]
+
+
+        # json format for the results
+        x = poets
+        y = lexDiv
+        z = length
+        w = sentiment_count
+
+        trace_meta = {
+                "poet": x,
+                "lexical_diversity": y,
+                "poem_length": z,
+                "sentiment": w
+        }
+        return jsonify (trace_meta)        
 
 @app.route('/metadata/<poet>')
 def metadata1(poet):
