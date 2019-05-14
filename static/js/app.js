@@ -23,7 +23,7 @@ d3.json(urlMetadata).then(function(trace){
     };
     console.log(poetOptions);
 
-    // Populate the poet options
+    // Populate the poet options dropdown
     var options1 = poetName
         .selectAll("#title")
         .data(poetOptions).enter()
