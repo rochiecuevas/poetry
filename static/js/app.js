@@ -1,5 +1,6 @@
 // Set the urls and default values
 var urlMetadata = "/metadata"
+var urlMeta = "/metadata2"
 var urlPoem = "/data"
 var defaultPoet = "Robert Frost";
 var defaultPoem = "October";
@@ -33,10 +34,10 @@ d3.json(urlMetadata).then(function(trace){
         })
         .attr("type", "names");
     
-    // Use the default poet
+    // Fill the first spot in the dropdown menu with the default poet
     options1.property("selected", function(d){
         return d === defaultPoet
-        });
+        });    
 
     // Use the default poet to create a subset of poem titles for the title options list
     var urlMetadata1 = `/metadata/${defaultPoet}`;
@@ -54,6 +55,87 @@ d3.json(urlMetadata).then(function(trace){
 
     //  Change the poet
     poetName.on("change", handleChangePoet);
+});
+
+// Put static graphs comparing lexical diversity and poem length among the poets
+d3.json(urlMeta).then(function(trace){
+    var data = [trace][0];
+    console.log(data);
+
+    // Construct the poem length bar plot
+    data["type"] = "bar";
+    data["x"] = data["poet"];
+    data["y"] = data["poem_length"];
+
+    var layout = {
+        showlegend: false,
+        xaxis: {title: "Poet"},
+        yaxis: {title: "Mean Poem Length (number of words)"}
+    };
+
+    Plotly.newPlot("bar2", [data], layout);
+
+    // Construct the lexical diversity bar plot
+    data["type"] = "bar";
+    data["x"] = data["poet"];
+    data["y"] = data["lexical_diversity"];
+
+    var layout = {
+        showlegend: false,
+        xaxis: {title: "Poet"},
+        yaxis: {title: "Mean Lexical Diversity"}
+    };
+
+    Plotly.newPlot("bar3", [data], layout);
+
+    // Construct the sentiments bar plot
+    var positive = [];
+    var negative = [];
+    var neutral = [];
+    var poets = data["poet"];
+
+    console.log(data["sentiment"])
+    for (var i = 0; i < data["sentiment"].length; i ++){
+        positive.push(data["sentiment"][i]["positive"]);
+        negative.push(data["sentiment"][i]["negative"]);
+        neutral.push(data["sentiment"][i]["neutral"]);
+    };
+    console.log(positive);
+    console.log(negative);
+    console.log(neutral);
+    console.log(poets);
+
+    trace_pos = {
+        type: "bar",
+        x: poets,
+        y: positive,
+        name: "positive"
+    };
+
+    trace_neg = {
+        type: "bar",
+        x: poets,
+        y: negative,
+        name: "negative"
+    };
+
+    trace_neu = {
+        type: "bar",
+        x: poets,
+        y: neutral,
+        name: "neutral"
+    };
+    
+    var data2 = [trace_pos, trace_neg, trace_neu];
+
+    var layout = {
+        barmode: "group",
+        xaxis: {title: "Poet"},
+        yaxis: {title: "Sentiment Count"}
+    };
+
+    Plotly.newPlot("bar4", data2, layout);
+
 });
 
 ////////////////////////
