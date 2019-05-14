@@ -51,11 +51,13 @@
         <div class = "col-md-2"></div>
         <div class = "col-md-8">
           <h3>NLP Overview</h3>
-          <p>The code I used here, and detailed explanations, can be found in my GitHub repository: <a href = "https://github.com/rochiecuevas/poetry">https://github.com/rochiecuevas/poetry</a>.</p>
+          <p>The code used for analyses, and detailed explanations, can be found in my GitHub repository: <a href = "https://github.com/rochiecuevas/poetry">https://github.com/rochiecuevas/poetry</a>.</p>
           <ol>
             <li><b>Collected poems.</b> The poems were obtained from different poetry websites through webscraping using the <a href = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup</a> Python library. Webscraping allowed me to automate the extraction of poems from the websites.</li>
-            <li><b>Measured of Term Importance.</b> Term importance was calculated based on a metric called <i>term frequency-inverse document frequency</i> (TF-IDF). Term frequency is the number of times a term appears in a document. Inverse document frequency, on the other hand, is the calculated based on the inverse fraction of the number of documents in which the term appears in the corpus (set of documents). A high TF-IDF, therefore, indicates that a term occurs frequently in a document but not in all documents in the corpus; hence, it can be used as a keyword that distinguishes that document among the others in the corpus. On the other hand, a low TF-IDF is reached when a term appears in many documents within the corpus. More about TF-IDF <a href = "https://en.wikipedia.org/wiki/Tf%E2%80%93idf">here</a>.</li>
-            <li><b>Analysed Sentiment.</b> I used the Python <a href = "https://textblob.readthedocs.io/en/dev/">TextBlob</a> module because it is capable of unsupervised sentiment analysis. This means that it can predict if a poem is positive or negative just based on the words included in it; I didn't have to train a model using a pre-classified training data set.</li>
+            <br>
+            <li><b>Measured Keyword Importance.</b> Term importance was calculated based on a metric called <i>term frequency-inverse document frequency</i> (TF-IDF). Term frequency is the number of times a term appears in a document. Inverse document frequency, on the other hand, is the calculated based on the inverse fraction of the number of documents in which the term appears in the corpus (set of documents). A high TF-IDF, therefore, indicates that a term occurs frequently in a document but not in all documents in the corpus; hence, it can be used as a keyword that distinguishes that document among the others in the corpus. On the other hand, a low TF-IDF is reached when a term appears in many documents within the corpus. More about TF-IDF <a href = "https://en.wikipedia.org/wiki/Tf%E2%80%93idf">here</a>.</li>
+            <br>
+            <li><b>Analysed Sentiment.</b> The Python <a href = "https://textblob.readthedocs.io/en/dev/">TextBlob</a> module was used because it is capable of unsupervised sentiment analysis. This means that it can predict if a poem is positive or negative just based on the words included in it; I didn't have to train a model using a pre-classified training data set.</li>
         </ol>
         </div>
       </div>
@@ -157,23 +159,36 @@
   <!-- All poets -->
   <div class = "container">
     <h3>Poem insights</h3>
-    <!-- Keyword network -->
-    <div class = "col-md-4">
-      <h4>Network of keywords</h4>
-      <img src = "static/images/poemTFIDF_network.png" alt = "TFIDF network image">
+    <div class = "row">
+      <!-- Keyword network -->
+      <div class = "col-md-6">
+        <h4>Network of keywords</h4>
+        <img src = "static/images/poemTFIDF_network.png" alt = "TFIDF network image">
+      </div>
+      <!-- Poem length compared -->
+      <div class = "col-md-6">
+        <h4>Poem Lengths</h4>
+        <div id = "bar2"></div>
+        <p><i>Rudyard Kipling was the most verbose among the three poets. On average, his poems had 182 words. William Butler Yeats was the poet of a few words because his poems averaged 107 words.</i></p>
+      </div>
     </div>
-    <!-- Poem length compare -->
-    <div class = "col-md-4">
-      <h4>Poem Lengths</h4>
-      <p>Hello</p>
+    <div class = "row">
+      <!-- Lexical diversity compared -->
+      <div class = "col-md-6">
+        <h4>Lexical Diversity</h4>
+        <div id = "bar3"></div>
+        <p><i>The three poets have similar average lexical diversities of ~80%. This means that around 80% of the words used for each poem was unique. Note that stop words (e.g., pronouns and their contraction variants, different forms of 'be') were already filtered out before lexical diversity was calculated.</i></p>
+      </div>    
+      <!-- Sentiments compared -->
+      <div class = "col-md-6">
+        <h4>Sentiments</h4>
+        <div id = "bar4"></div>
+        <p><i>For each poet, more than 65% of the poems in the database is predicted by NLP to be positive. This is an interesting finding because many of these poems were written around the time of, or right after, World War I.</i></p>
+      </div>
     </div>
-    <!-- Lexical diversity compare -->
-    <div class = "col-md-4">
-      <h4>Lexical Diversity</h4>
-      <p>Hello!</p>
-    </div>
-      
-      
+    
+    
+    
   </div>
   <hr>
   <!-- Website Sources -->
