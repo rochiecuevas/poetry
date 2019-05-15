@@ -1,1 +1,1 @@
-web: gunicorn poetry.app:Frost_NLP
+web: gunicorn poetry.Frost_NLP:app
