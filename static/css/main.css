@@ -17,6 +17,6 @@ img {
 }
 
 .jumbotron {
-    background-image: url("/static/images/IMG_0270.jpg");
+    background-image: url("../static/images/IMG_0270.jpg");
     background-size: cover;
 }
