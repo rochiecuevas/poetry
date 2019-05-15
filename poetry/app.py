@@ -178,4 +178,4 @@ def importance(title):
     return jsonify (trace_tfidf)    
 
 if __name__ == "__main__":
-        app.run(debug=True)
+        app.run(debug=False)
