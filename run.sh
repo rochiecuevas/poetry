@@ -1,1 +1,1 @@
-FLASK_APP=poetry/Frost_NLP.py flask run
+FLASK_APP=poetry/app.py flask run

@@ -1,4 +1,4 @@
-from poetry.Frost_NLP import db
+from poetry.app import db
 
 # db.drop_all()
 db.create_all()
